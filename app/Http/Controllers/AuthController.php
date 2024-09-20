@@ -20,7 +20,7 @@ class AuthController extends Controller
 
         $token = $user->createToken($request->name);
 
-        return ['user' => $user, 'token' => $token->plainTextToke];
+        return ['user' => $user, 'token' => $token->plainTextToken];
     }
 
     public function login(Request $request){
@@ -35,13 +35,15 @@ class AuthController extends Controller
         if(!$user || !Hash::check($request->password, $user->password)){
 
             return [
-                'message' => 'The provided credentials are incorrect'
+                'errors' => [
+                    'email' => ['The provided credentials are incorrect']
+                ]
             ];
         }
 
         $token = $user->createToken($user->name);
 
-        return ['user' => $user, 'token' => $token->plainTextToke];
+        return ['user' => $user, 'token' => $token->plainTextToken];
     }
 
     public function logout(Request $request){
